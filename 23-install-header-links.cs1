@@ -1,0 +1,16 @@
+#!/usr/bin/env -S dotnet run --file
+#:package Lestaly.General@0.146.0
+using Lestaly;
+using Lestaly.Cx;
+
+await Paved.ProceedAsync(async () =>
+{
+    var moduleUrl = new Uri("https://github.com/toras9000/bookstack-header-links/archive/refs/heads/v26.09.zip");
+
+    await "docker".args("compose", "--file", ThisSource.RelativeFile("compose.yml"),
+        "exec",
+            "--workdir", "/app/www",
+        "app",
+            "php", "artisan", "bookstack:install-module", moduleUrl
+    ).input("yes\nyes\nyes\n2\n").result().success();
+});
